@@ -21,6 +21,34 @@
             };
             options = $.extend({}, defaults, options);
 
+            // Initialize elements
+            function setup($label, $input, $container) {
+                $label.css('position', 'absolute').click(function() {
+                    $input.focus();
+                });
+                $container.css('position', 'relative');
+            }
+
+            // Show label hint
+            function show($label, $input) {
+                if ($input.val() === '') {
+                    $label.css({
+                        position: 'absolute',
+                        textIndent: 0
+                    });
+                    if (options.css) {
+                        $label.css(options.css);
+                    }
+                }
+            }
+
+            // Hide label hint
+            function hide($label, $input) {
+                $label.css({
+                    textIndent: -9999
+                });
+            }
+
             return this.each(function() {
 
                 var $label = $(this);
@@ -36,37 +64,25 @@
                     } else {
                         $container = $label.parent();
                     }
-                    $container.css('position', 'relative');
 
-                    $label.css('position', 'absolute').click(function() {
-                        $input.focus();
+                    // Initialize elements
+                    setup($label, $input, $container);
+
+                    // Show label on input blur
+                    $input.blur(function() {
+                        show($label, $input);
                     });
 
-                    this.hide = function() {
-                        $label.css({
-                            textIndent: -9999
-                        });
-                    };
+                    // Hide label on input focus
+                    $input.focus(function() {
+                        hide($label, $input);
+                    });
 
-                    this.show = function() {
-                        if ($input.val() === '') {
-                            $label.css({
-                                position: 'absolute',
-                                textIndent: 0
-                            });
-                            if (options.css) {
-                                $label.css(options.css);
-                            }
-                        }
-                    };
-
-                    $input.focus(this.hide);
-                    $input.blur(this.show);
-
+                    // Set initial state
                     if ($input.val() === '') {
-                        this.show();
+                        show($label, $input);
                     } else {
-                        this.hide();
+                        hide($label, $input);
                     }
                 }
 
