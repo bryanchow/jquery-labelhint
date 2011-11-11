@@ -37,16 +37,14 @@
             }
 
             // Show label hint
-            function show($label, $input) {
-                if ($input.val() === '') {
-                    $label.css({
-                        position: 'absolute',
-                        textIndent: 0
-                    });
-                }
+            function show($label) {
+                $label.css({
+                    position: 'absolute',
+                    textIndent: 0
+                });
             }
 
-            function hide($label, $input) {
+            function hide($label) {
                 $label.css({
                     textIndent: -9999
                 });
@@ -73,19 +71,21 @@
 
                     // Show label on input blur
                     $input.blur(function() {
-                        show($label, $input);
+                        if ($input.val() === '') {
+                            show($label);
+                        }
                     });
 
                     // Hide label on input focus
                     $input.focus(function() {
-                        hide($label, $input);
+                        hide($label);
                     });
 
                     // Set initial state
                     if ($input.val() === '') {
-                        show($label, $input);
+                        show($label);
                     } else {
-                        hide($label, $input);
+                        hide($label);
                     }
                 }
 
