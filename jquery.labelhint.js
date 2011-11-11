@@ -13,16 +13,23 @@
         labelHint: function(options) {
 
             var defaults = {
+                container: null,
                 css: {
                     top: 5,
                     left: 5
                 },
-                container: null
+                className: 'hint'
             };
             options = $.extend({}, defaults, options);
 
             // Initialize elements
             function setup($label, $input, $container) {
+                if (options.className) {
+                    $label.addClass(options.className);
+                }
+                if (options.css) {
+                    $label.css(options.css);
+                }
                 $label.css('position', 'absolute').click(function() {
                     $input.focus();
                 });
@@ -36,13 +43,9 @@
                         position: 'absolute',
                         textIndent: 0
                     });
-                    if (options.css) {
-                        $label.css(options.css);
-                    }
                 }
             }
 
-            // Hide label hint
             function hide($label, $input) {
                 $label.css({
                     textIndent: -9999
